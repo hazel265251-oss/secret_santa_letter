@@ -53,6 +53,112 @@
       to { opacity:0; transform: translate(-50%, -80%) scale(.5); }
     }
 
+    /* ============ LANDING PAGE ============ */
+    .landing{
+      position:fixed;
+      inset:0;
+      z-index:100;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(1000px 600px at 15% 20%, rgba(220,38,38,.15), transparent 60%),
+        radial-gradient(900px 520px at 85% 70%, rgba(185,28,28,.12), transparent 62%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      opacity:1;
+      transition: opacity .6s ease, visibility .6s ease;
+    }
+
+    .landing.hidden{
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+    }
+
+    .landing-content{
+      text-align:center;
+      padding:20px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUp{
+      from{
+        opacity:0;
+        transform:translateY(30px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    .landing-title{
+      font-size:3rem;
+      font-weight:900;
+      color:var(--accent);
+      margin:0 0 20px 0;
+      text-shadow: 2px 2px 8px rgba(220,38,38,.2);
+      animation: fadeInUp 1s ease-out .2s backwards;
+    }
+
+    .landing-subtitle{
+      font-size:1.3rem;
+      color:#666;
+      margin:0 0 40px 0;
+      animation: fadeInUp 1s ease-out .4s backwards;
+    }
+
+    .landing-gift{
+      font-size:80px;
+      margin-bottom:30px;
+      animation: bounce 2s ease-in-out infinite, fadeInUp 1s ease-out .1s backwards;
+    }
+
+    @keyframes bounce{
+      0%, 100%{ transform: translateY(0) rotate(-5deg); }
+      50%{ transform: translateY(-20px) rotate(5deg); }
+    }
+
+    .enter-btn{
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color:white;
+      border:none;
+      padding:18px 50px;
+      font-size:1.2rem;
+      font-weight:700;
+      border-radius:50px;
+      cursor:pointer;
+      box-shadow: 0 20px 40px rgba(220,38,38,.3);
+      transition: all .3s ease;
+      animation: fadeInUp 1s ease-out .6s backwards, pulse 2s ease-in-out 2s infinite;
+    }
+
+    .enter-btn:hover{
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 25px 50px rgba(220,38,38,.4);
+    }
+
+    @keyframes pulse{
+      0%, 100%{ box-shadow: 0 20px 40px rgba(220,38,38,.3); }
+      50%{ box-shadow: 0 20px 50px rgba(220,38,38,.5); }
+    }
+
+    @media (max-width: 600px){
+      .landing-title{
+        font-size:2rem;
+      }
+      .landing-subtitle{
+        font-size:1rem;
+      }
+      .landing-gift{
+        font-size:60px;
+      }
+      .enter-btn{
+        padding:15px 40px;
+        font-size:1rem;
+      }
+    }
+
+    /* ============ MAIN CONTENT ============ */
     .wrap{
       position:relative;
       z-index:2;
@@ -150,6 +256,62 @@
       display:grid;
       place-items:center;
       padding:20px 10px;
+    }
+
+    .decorations{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+    }
+
+    .deco-gift{
+      position:absolute;
+      font-size:40px;
+      opacity:0.15;
+      animation:float 6s ease-in-out infinite;
+    }
+
+    .deco-gift:nth-child(1){
+      top:10%;
+      left:8%;
+      animation-delay:0s;
+    }
+    .deco-gift:nth-child(2){
+      top:25%;
+      right:12%;
+      animation-delay:1s;
+    }
+    .deco-gift:nth-child(3){
+      bottom:15%;
+      left:15%;
+      animation-delay:2s;
+      font-size:35px;
+    }
+    .deco-gift:nth-child(4){
+      bottom:20%;
+      right:10%;
+      animation-delay:1.5s;
+      font-size:45px;
+    }
+    .deco-gift:nth-child(5){
+      top:50%;
+      left:5%;
+      animation-delay:0.5s;
+      font-size:30px;
+    }
+    .deco-gift:nth-child(6){
+      top:60%;
+      right:8%;
+      animation-delay:2.5s;
+      font-size:38px;
+    }
+
+    @keyframes float{
+      0%, 100%{ transform: translateY(0) rotate(0deg); }
+      25%{ transform: translateY(-10px) rotate(2deg); }
+      50%{ transform: translateY(-5px) rotate(-2deg); }
+      75%{ transform: translateY(-15px) rotate(1deg); }
     }
 
     .envelopeWrap{
@@ -478,9 +640,9 @@
       color: var(--accent);
     }
     .musicControl.playing .musicIcon{
-      animation: pulse 1.5s ease-in-out infinite;
+      animation: musicPulse 1.5s ease-in-out infinite;
     }
-    @keyframes pulse{
+    @keyframes musicPulse{
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.7; transform: scale(1.1); }
     }
@@ -594,6 +756,16 @@
 <body>
   <canvas id="snowCanvas"></canvas>
 
+  <!-- Landing Page -->
+  <div class="landing" id="landingPage">
+    <div class="landing-content">
+      <div class="landing-gift">🎁</div>
+      <h1 class="landing-title">You've Got Mail!</h1>
+      <p class="landing-subtitle">Someone special sent you a Secret Santa letter 🎄</p>
+      <button class="enter-btn" id="enterBtn">Open Your Gift ✨</button>
+    </div>
+  </div>
+
   <!-- Music Control -->
   <div class="musicControl" id="musicControl" style="display:none;">
     <div class="musicIcon">🎵</div>
@@ -615,6 +787,15 @@
     <div class="stage">
       <div class="grid">
         <div class="envelope-area" id="envelopeArea">
+          <div class="decorations">
+            <div class="deco-gift">🎁</div>
+            <div class="deco-gift">🎄</div>
+            <div class="deco-gift">⭐</div>
+            <div class="deco-gift">🎅</div>
+            <div class="deco-gift">❄️</div>
+            <div class="deco-gift">🔔</div>
+          </div>
+
           <div class="envelopeWrap">
             <div class="letterCard" id="letterCard" aria-hidden="true">
               <div class="header">
@@ -632,7 +813,7 @@
             </div>
           </div>
 
-          <div class="footerTip">Love from bottom of my heart 😉</div>
+          <div class="footerTip">Love from bottom of my hearts 😉</div>
         </div>
 
         <div style="display:grid; gap:14px;">
@@ -706,7 +887,7 @@ Your Secret Santa 🎁`,
 
       hints: [
         "Hint 1: So close to you",
-        "Hint 2: you act like I am a girl sometimes",
+        "Hint 2: You act him like as a Girl some time",
         "Hint 3: He means so much to you"
       ],
 
@@ -727,6 +908,14 @@ Your Secret Santa 🎁`,
 
       snow: { enabled: true, density: 120 }
     };
+
+    // Landing Page
+    const landingPage = document.getElementById("landingPage");
+    const enterBtn = document.getElementById("enterBtn");
+
+    enterBtn.addEventListener("click", () => {
+      landingPage.classList.add("hidden");
+    });
 
     function typewriter(el, text, speed = 14) {
       el.textContent = "";
